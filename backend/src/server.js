@@ -9,7 +9,21 @@ app.use(cors());
 app.use(express.json());
 
 // ============================
-//  IMPORTAR RUTAS (SOLO las CONSOLIDADAS)
+// 🚨 RUTA DE PRUEBA (HEALTH CHECK) 🚨
+// Esto resuelve el "Cannot GET /" en Render, confirmando que la API está activa.
+// ============================
+app.get('/', (req, res) => {
+    res.status(200).json({
+        success: true,
+        message: "MetchConnect-Pro API está funcionando y lista.",
+        environment: process.env.NODE_ENV || "development"
+    });
+});
+// ============================
+
+
+// ============================
+//  IMPORTAR RUTAS (SOLO las CONSOLIDADAS)
 // ============================
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
@@ -21,10 +35,10 @@ const vehicleRoutes = require("./routes/vehicleRoutes");
 const mechanicRoutes = require("./routes/mechanicRoutes");
 
 // ============================
-//  CONECTAR BASE DE DATOS
+//  CONECTAR BASE DE DATOS
 // ============================
 const MONGO_URI =
-  process.env.MONGO_URI || "mongodb://localhost:27017/metchconnect";
+  process.env.MONGO_URI || "mongodb://localhost:27017/metchconnect";
 connectDB(MONGO_URI);
 
 // ============================
@@ -33,7 +47,7 @@ connectDB(MONGO_URI);
 require("./jobs/reminderJob");
 
 // ============================
-//  REGISTRAR RUTAS (SOLO las CONSOLIDADAS)
+//  REGISTRAR RUTAS (SOLO las CONSOLIDADAS)
 // ============================
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
@@ -45,9 +59,9 @@ app.use("/api/vehicles", vehicleRoutes);
 app.use("/api/mechanics", mechanicRoutes);
 
 // ============================
-//  INICIAR SERVIDOR
+//  INICIAR SERVIDOR
 // ============================
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () =>
-  console.log(`🚀 Servidor ejecutándose en puerto ${PORT}`)
+  console.log(`🚀 Servidor ejecutándose en puerto ${PORT}`)
 );
